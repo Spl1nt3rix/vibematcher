@@ -1,0 +1,71 @@
+<!-- search.html — страница поиска анкет -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Поиск людей</h2>
+<!-- Форма фильтров (метод GET, чтобы параметры были в URL) -->
+<form method="get" class="row g-3 mb-4">
+    {{ form.hidden_tag() }}
+    <div class="col-md-3">
+        {{ form.gender.label }} {{ form.gender(class="form-select") }}
+    </div>
+    <div class="col-md-2">
+        {{ form.age_min.label }} {{ form.age_min(class="form-control") }}
+    </div>
+    <div class="col-md-2">
+        {{ form.age_max.label }} {{ form.age_max(class="form-control") }}
+    </div>
+    <div class="col-md-3">
+        {{ form.city.label }} {{ form.city(class="form-control") }}
+    </div>
+    <div class="col-md-2">
+        {{ form.hair_color.label }} {{ form.hair_color(class="form-control") }}
+    </div>
+    <div class="col-md-3">
+        {{ form.nationality.label }} {{ form.nationality(class="form-control") }}
+    </div>
+    <div class="col-md-5">
+        {{ form.interests.label }} {{ form.interests(class="form-control", placeholder="Например, спорт, музыка") }}
+    </div>
+    <div class="col-md-2">
+        {{ form.online_only.label }} {{ form.online_only(class="form-check-input") }}
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Найти</button>
+        <a href="{{ url_for('main.search') }}" class="btn btn-secondary">Сбросить</a>
+    </div>
+</form>
+
+<!-- Вывод найденных пользователей в виде карточек -->
+<div class="row">
+    {% for user in users %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="{{ url_for('static', filename='uploads/' + user.profile.avatar) }}" class="card-img-top" alt="Аватар">
+            <div class="card-body">
+                <h5 class="card-title">{{ user.profile.first_name or user.username }}, {{ user.profile.age() or '' }}</h5>
+                <p class="card-text">{{ user.profile.city }}</p>
+                <p class="card-text"><small>{{ user.profile.about_me[:100] }}...</small></p>
+                <p>
+                    {% if user.is_online %}
+                        <span class="badge bg-success">Онлайн</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Был(а) {{ user.last_seen.strftime('%d.%m.%Y') if user.last_seen else 'давно' }}</span>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('main.profile', username=user.username) }}" class="btn btn-sm btn-outline-primary">Подробнее</a>
+                <form action="{{ url_for('main.send_match', user_id=user.id) }}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-success">Откликнуться</button>
+                </form>
+                <form action="{{ url_for('main.block_user', user_id=user.id) }}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Заблокировать пользователя?')">🚫</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>Никого не найдено. Попробуйте изменить фильтры.</p>
+    {% endfor %}
+</div>
+{% endblock %}

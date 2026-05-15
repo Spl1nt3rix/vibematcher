@@ -1,0 +1,153 @@
+/* style.css — наши собственные стили, делающие сайт красивее */
+
+/* Импорт шрифта Nunito из Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    color: #333;
+    min-height: 100vh;
+}
+
+/* Шапка с градиентом */
+.navbar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.navbar-brand {
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+}
+.navbar-nav .nav-link {
+    color: rgba(255,255,255,0.9) !important;
+    font-weight: 600;
+    margin: 0 0.5rem;
+    transition: all 0.2s;
+}
+.navbar-nav .nav-link:hover {
+    color: #fff !important;
+    transform: translateY(-1px);
+}
+
+/* Карточки пользователей */
+.card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: #fff;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+}
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+.card-body {
+    padding: 1.5rem;
+}
+.card-title {
+    font-weight: 700;
+    color: #333;
+}
+.card-text {
+    color: #555;
+}
+
+/* Значки-бейджи */
+.badge {
+    font-size: 0.85rem;
+    padding: 0.4em 0.8em;
+    border-radius: 20px;
+    font-weight: 600;
+}
+.bg-success {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;
+}
+.bg-secondary {
+    background: #adb5bd !important;
+}
+
+/* Кнопки */
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 30px;
+    padding: 0.5rem 1.8rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd5 0%, #6a4190 100%);
+    transform: scale(1.02);
+}
+.btn-outline-primary {
+    border-color: #667eea;
+    color: #667eea;
+    border-radius: 30px;
+    font-weight: 600;
+}
+.btn-outline-primary:hover {
+    background: #667eea;
+    border-color: #667eea;
+    color: #fff;
+}
+.btn-success {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+}
+.btn-outline-success {
+    border-color: #38f9d7;
+    color: #38f9d7;
+    border-radius: 30px;
+}
+.btn-outline-success:hover {
+    background: #38f9d7;
+    border-color: #38f9d7;
+    color: #000;
+}
+.btn-outline-danger {
+    border-radius: 30px;
+}
+
+/* Поля ввода */
+.form-control, .form-select {
+    border-radius: 15px;
+    border: 2px solid #e9ecef;
+    padding: 0.6rem 1rem;
+    transition: all 0.2s;
+}
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102,126,234,0.25);
+}
+
+/* Алерты (уведомления) */
+.alert {
+    border-radius: 15px;
+    border: none;
+}
+
+/* Hero-секция на главной */
+.hero {
+    background: white;
+    border-radius: 30px;
+    padding: 3rem;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+    margin-top: 2rem;
+}
+
+/* Заголовки */
+h2 {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #333;
+}

@@ -1,0 +1,45 @@
+<!-- profile.html — просмотр профиля другого пользователя -->
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <!-- Левая колонка с аватаром -->
+    <div class="col-md-4">
+        <img src="{{ url_for('static', filename='uploads/' + user.profile.avatar) }}" class="img-fluid rounded" alt="Аватар">
+    </div>
+    <!-- Правая колонка с информацией -->
+    <div class="col-md-8">
+        <h2>{{ user.profile.first_name or user.username }}, {{ user.profile.age() or '' }}</h2>
+        <p><strong>Город:</strong> {{ user.profile.city }}</p>
+        <p><strong>Цвет волос:</strong> {{ user.profile.hair_color }}</p>
+        <p><strong>Национальность:</strong> {{ user.profile.nationality }}</p>
+        <p><strong>О себе:</strong> {{ user.profile.about_me }}</p>
+        <p><strong>Интересы:</strong> {{ user.profile.interests }}</p>
+        <p><strong>Онлайн:</strong>
+           {% if user.is_online %}
+              🟢 Онлайн
+           {% else %}
+              {{ user.last_seen.strftime('%d.%m.%Y %H:%M') if user.last_seen else 'давно' }}
+           {% endif %}
+        </p>
+
+        <!-- Показываем контакты только при взаимном согласии -->
+        {% if show_contacts %}
+            <h4>Контакты</h4>
+            <p>Телефон: {{ user.profile.contact_phone }}</p>
+            <p>Email: {{ user.profile.contact_email }}</p>
+        {% else %}
+            <p class="text-muted">Контакты будут доступны после взаимного согласия.</p>
+        {% endif %}
+
+        <!-- Кнопки действий (не показываем для самого себя) -->
+        {% if user.id != current_user.id %}
+            <form action="{{ url_for('main.send_match', user_id=user.id) }}" method="post" class="d-inline">
+                <button type="submit" class="btn btn-success">Откликнуться</button>
+            </form>
+            <form action="{{ url_for('main.block_user', user_id=user.id) }}" method="post" class="d-inline">
+                <button type="submit" class="btn btn-outline-danger">Заблокировать</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

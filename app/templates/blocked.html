@@ -1,0 +1,26 @@
+<!-- blocked.html — страница чёрного списка -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Чёрный список</h2>
+{% if blocks %}
+    <ul class="list-group">
+    {% for block in blocks %}
+        {% set blocked_user = block.blocked_user %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>{{ blocked_user.username }}</strong>
+                {% if blocked_user.profile and blocked_user.profile.first_name %}
+                    ({{ blocked_user.profile.first_name }})
+                {% endif %}
+            </div>
+            <!-- Кнопка разблокировки -->
+            <form action="{{ url_for('main.unblock_user', user_id=blocked_user.id) }}" method="post" class="d-inline">
+                <button type="submit" class="btn btn-outline-success btn-sm">Разблокировать</button>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Список пуст.</p>
+{% endif %}
+{% endblock %}

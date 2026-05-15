@@ -1,0 +1,15 @@
+<!-- index.html — главная посадочная страница -->
+{% extends "base.html" %}
+{% block content %}
+<div class="hero text-center">
+    <!-- Крупный заголовок -->
+    <h1 class="display-4 fw-bold">VibeMatcher</h1>
+    <!-- Подзаголовок -->
+    <p class="lead mt-3">Найди того, кто разделяет твой vibe ✨</p>
+    <!-- Кнопки регистрации и входа -->
+    <div class="mt-4">
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg"><i class="fas fa-user-plus me-2"></i>Присоединиться</a>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-lg ms-3"><i class="fas fa-sign-in-alt me-2"></i>Войти</a>
+    </div>
+</div>
+{% endblock %}

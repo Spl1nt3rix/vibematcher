@@ -1,0 +1,68 @@
+<!-- base.html — общая оболочка для всех страниц сайта -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeMatcher - Знакомства по вайбу</title>
+    <!-- Подключаем Bootstrap 5 (готовые стили и скрипты) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Наши собственные стили -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Font Awesome для иконок (опционально) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Навигационная панель (шапка) -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <!-- Название сайта, ссылка на главную -->
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">VibeMatcher</a>
+            <!-- Кнопка для мобильного меню -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Содержимое навигации -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated %}
+                        <!-- Пункты для авторизованных пользователей -->
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.search') }}"><i class="fas fa-search me-1"></i>Поиск</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.matches') }}"><i class="fas fa-heart me-1"></i>Заявки</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.profile', username=current_user.username) }}"><i class="fas fa-user me-1"></i>Профиль</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.edit_profile') }}"><i class="fas fa-pencil-alt me-1"></i>Редактировать</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('main.blocked_list') }}"><i class="fas fa-ban me-1"></i>Чёрный список</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt me-1"></i>Выйти</a></li>
+                    {% else %}
+                        <!-- Пункты для гостей -->
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Войти</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Регистрация</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Основное содержимое страницы -->
+    <main class="container mt-4">
+        <!-- Блок для показа сообщений (flash-уведомлений) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <!-- Сюда вставляется содержимое конкретной страницы -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Скрипты Bootstrap'а -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Наш JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

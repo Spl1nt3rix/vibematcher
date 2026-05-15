@@ -1,0 +1,74 @@
+<!-- matches.html — страница заявок (входящие, исходящие, принятые) -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Заявки</h2>
+<!-- Табы для переключения между типами заявок -->
+<ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#received">Входящие</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#sent">Исходящие</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#accepted">Взаимные</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <!-- Входящие заявки -->
+    <div class="tab-pane fade show active" id="received">
+        {% if received %}
+            {% for match in received %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5>{{ match.sender.username }}</h5>
+                        <p>{{ match.sender.profile.about_me[:100] }}...</p>
+                        <form action="{{ url_for('main.accept_match', match_id=match.id) }}" method="post" class="d-inline">
+                            <button class="btn btn-success btn-sm">Принять</button>
+                        </form>
+                        <a href="{{ url_for('main.profile', username=match.sender.username) }}" class="btn btn-outline-primary btn-sm">Профиль</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Нет входящих заявок.</p>
+        {% endif %}
+    </div>
+
+    <!-- Исходящие -->
+    <div class="tab-pane fade" id="sent">
+        {% if sent %}
+            {% for match in sent %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5>{{ match.receiver.username }}</h5>
+                        <p>Ожидает ответа...</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Нет исходящих заявок.</p>
+        {% endif %}
+    </div>
+
+    <!-- Взаимные (принятые) -->
+    <div class="tab-pane fade" id="accepted">
+        {% if accepted %}
+            {% for match in accepted %}
+                {# Определяем партнёра: тот, кто не является текущим пользователем #}
+                {% set partner = match.sender if match.sender.id != current_user.id else match.receiver %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5>{{ partner.username }}</h5>
+                        <p>Контакты открыты!</p>
+                        <a href="{{ url_for('main.profile', username=partner.username) }}" class="btn btn-primary btn-sm">Смотреть контакты</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Пока нет взаимных симпатий.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
